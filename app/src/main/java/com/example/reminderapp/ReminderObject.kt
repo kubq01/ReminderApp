@@ -1,19 +1,27 @@
 package com.example.reminderapp
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 enum class Importance{
-    max, mid, min
+    max, mid, min;
+
 }
 
-class ReminderObject {
-    private var containsDeadline : Boolean = false
-    private var deadline1 : LocalDate = LocalDate.of(2000, 1, 1)
-    private var deadline2 : LocalDate = LocalDate.of(2000, 1, 1)
-    private var deadline3 : LocalDate = LocalDate.of(2000, 1, 1)
-    private var importance : Importance = Importance.max
-    private var category : String = ""
 
+@Entity
+data class ReminderObject (
+    @PrimaryKey var id : Int,
+    var containsDeadline : Boolean,
+    var deadline1 : LocalDateTime,
+    var deadline2 : LocalDateTime,
+    var deadline3 : LocalDateTime,
+    var importance : Importance,
+    var category : String
+
+    /*
     constructor(
         containsDeadline: Boolean,
         deadline1: LocalDate,
@@ -59,6 +67,6 @@ class ReminderObject {
     {
         return category
     }
+    */
 
-
-}
+)
