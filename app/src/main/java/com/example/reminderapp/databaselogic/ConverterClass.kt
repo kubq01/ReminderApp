@@ -1,6 +1,7 @@
-package com.example.reminderapp
+package com.example.reminderapp.databaselogic
 
 import androidx.room.TypeConverter
+import com.example.reminderapp.Importance
 import java.time.*
 import java.util.*
 
