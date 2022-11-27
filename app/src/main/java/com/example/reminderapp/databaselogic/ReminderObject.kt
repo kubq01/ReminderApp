@@ -15,10 +15,11 @@ enum class Importance{
 data class ReminderObject (
     //@PrimaryKey(autoGenerate = true)
    // var id : Int,
+    var reminderText : String,
     var containsDeadline : Boolean,
-    var deadline1 : LocalDateTime,
-    var deadline2 : LocalDateTime,
-    var deadline3 : LocalDateTime,
+    var deadline : LocalDateTime,
+    //var deadline2 : LocalDateTime,
+    //var deadline3 : LocalDateTime,
     var importance : Importance,
     var category : String)
 {
