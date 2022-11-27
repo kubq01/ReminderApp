@@ -3,7 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidStudioProjects/ReminderApp/app/src/main/res/drawable/row_shape.xml" value="0.211" />
         <entry key="..\:/AndroidStudioProjects/ReminderApp/app/src/main/res/layout/activity_main.xml" value="0.22509057971014493" />
+        <entry key="..\:/AndroidStudioProjects/ReminderApp/app/src/main/res/layout/fragment_list.xml" value="0.152" />
+        <entry key="..\:/AndroidStudioProjects/ReminderApp/app/src/main/res/layout/fragment_new_reminder.xml" value="0.22509057971014493" />
+        <entry key="..\:/AndroidStudioProjects/ReminderApp/app/src/main/res/layout/row_layout.xml" value="0.16974043715846995" />
+        <entry key="..\:/AndroidStudioProjects/ReminderApp/app/src/main/res/layout/row_shape.xml" value="0.16974043715846995" />
       </map>
     </option>
   </component>

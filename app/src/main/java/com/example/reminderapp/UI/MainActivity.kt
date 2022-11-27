@@ -1,38 +1,43 @@
-package com.example.reminderapp
+package com.example.reminderapp.UI
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.reminderapp.*
 import java.time.LocalDateTime
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelStoreOwner
-import androidx.lifecycle.viewmodel.viewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var servis : ServisClass //= ServisClass(applicationContext)
 
-    lateinit var viewModel : MainActivityViewModel
+    lateinit var viewModel : FragmentViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         servis = ServisClass(applicationContext)
 
 
 
-        var allData : LiveData<List<ReminderObject>> = servis.showAll()
-        val viewModelFactory = MainActivityViewModelFactory(125, applicationContext)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(MainActivityViewModel::class.java)
+        /*
+        //var allData : LiveData<List<ReminderObject>> = servis.showAll()
+        //val viewModelFactory = MainActivityViewModelFactory(125, applicationContext)
+        viewModel = ViewModelProvider(this)[FragmentViewModel::class.java]
 
         viewModel.showAll().observe(this, Observer {
-            findViewById<TextView>(R.id.textView).text = it.toString()
+
+            //findViewById<TextView>(R.id.textView).text = it.toString()
+            Log.i("AALiveData","changed")
         })
+
+
+         */
 
 
 
@@ -40,8 +45,8 @@ class MainActivity : AppCompatActivity() {
 
     fun onClickInsert(view : View)
     {
-       val r : ReminderObject = ReminderObject(1,false,
-           LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(),Importance.max,"cat1")
+       val r = ReminderObject(false,
+           LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), Importance.max,"cat1")
 
 
         viewModel.insertReminder(r)

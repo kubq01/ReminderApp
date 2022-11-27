@@ -13,14 +13,18 @@ enum class Importance{
 
 @Entity
 data class ReminderObject (
-    @PrimaryKey(autoGenerate = true)
-    var id : Int,
+    //@PrimaryKey(autoGenerate = true)
+   // var id : Int,
     var containsDeadline : Boolean,
     var deadline1 : LocalDateTime,
     var deadline2 : LocalDateTime,
     var deadline3 : LocalDateTime,
     var importance : Importance,
-    var category : String
+    var category : String)
+{
+    @PrimaryKey(autoGenerate = true)
+    var id : Int = 0
+}
 
     /*
     constructor(
@@ -70,4 +74,3 @@ data class ReminderObject (
     }
     */
 
-)
