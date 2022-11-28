@@ -4,6 +4,7 @@
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#3a3b3d</color>
+    <color name="greyish_green">#175727</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
@@ -11,4 +12,9 @@
     <color name="textAndAdd">#c1c4c9</color>
     <color name="elements">#94979c</color>
     <color name="actionBar">#252626</color>
+    <color name="light_green">#0a8c35</color>
+    <color name="dark_green">#103b1e</color>
+    <color name="maxImp">#750505</color>
+    <color name="midImp">#856307</color>
+    <color name="minImp">#082f6e</color>
 </resources>

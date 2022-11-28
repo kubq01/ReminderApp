@@ -8,12 +8,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/bg">
 
         <EditText
             android:id="@+id/editTextReminderText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="400dp"
+            android:paddingLeft="30dp"
             android:hint="Enter reminder..."
             android:inputType="textPersonName"
 
@@ -22,13 +24,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@drawable/row_shape"
+            android:padding="20dp"
+            >
 
             <TextView
                 android:id="@+id/textViewCategory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/Category" />
+                android:text="@string/Category"
+                android:textSize="20sp"
+                android:fontFamily="@font/lato_bold"/>
 
             <Spinner
                 android:id="@+id/spinnerCategory"
@@ -37,12 +44,16 @@
                 android:contentDescription="select a category"
                 android:minHeight="48dp" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switchImpOrDL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
-                android:text="@string/Importance" />
+                android:text="@string/Importance"
+                android:fontFamily="@font/lato_bold"
+                android:textColor="@color/teal_200"
+                android:textSize="20sp"
+                android:theme="@style/SwitchTheme"/>
 
             <Spinner
                 android:id="@+id/spinnerImportance"
@@ -51,12 +62,13 @@
                 android:contentDescription="select an importance"
                 android:minHeight="48dp" />
 
-            <Spinner
-                android:id="@+id/spinnerDeadline"
+            <Button
+                android:id="@+id/buttonDeadline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:contentDescription="select an deadline"
-                android:minHeight="48dp" />
+                android:minHeight="48dp"
+                android:text="@string/selectDate"
+                />
 
         </LinearLayout>
 

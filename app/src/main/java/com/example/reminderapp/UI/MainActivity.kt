@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
     fun onClickInsert(view : View)
     {
        val r = ReminderObject("text",false,
-           LocalDateTime.now(), Importance.max,"cat1")
+           LocalDateTime.now(), Importance.max, LocalDateTime.now(),"cat1")
 
 
         viewModel.insertReminder(r)

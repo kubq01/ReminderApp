@@ -21,6 +21,7 @@ data class ReminderObject (
     //var deadline2 : LocalDateTime,
     //var deadline3 : LocalDateTime,
     var importance : Importance,
+    var startDate : LocalDateTime,
     var category : String)
 {
     @PrimaryKey(autoGenerate = true)

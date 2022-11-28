@@ -5,4 +5,5 @@
     <string name="Category">Category</string>
     <string name="Importance">Importance</string>
     <string name="Deadline">Deadline</string>
+    <string name="selectDate">Select a date</string>
 </resources>
