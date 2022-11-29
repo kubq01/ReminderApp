@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import com.example.reminderapp.ReminderObject
 
 @TypeConverters(ConverterClass::class)
-@Database(entities = [ReminderObject::class], version = 2)
+@Database(entities = [ReminderObject::class], version = 3)
 abstract class DatabaseClass : RoomDatabase() {
     abstract fun getDao() : DaoInterface
 }

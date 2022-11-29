@@ -31,7 +31,9 @@ class RecycleViewAdapter : RecyclerView.Adapter<RecycleViewAdapter.MyViewHolder>
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val rObject : ReminderObject = reminderList.get(reminderList.size-1)
+
+        val rObject : ReminderObject = reminderList.get(position)
+
         if(rObject.containsDeadline)
         {
             val deadline : LocalDateTime = rObject.deadline
@@ -89,6 +91,8 @@ class RecycleViewAdapter : RecyclerView.Adapter<RecycleViewAdapter.MyViewHolder>
             holder.itemView.findViewById<TextView>(R.id.textViewDeadline).setVisibility(View.GONE)
         }
 
+
+
         holder.itemView.findViewById<TextView>(R.id.textViewReminder).setText(rObject.reminderText)
     }
 
@@ -96,7 +100,7 @@ class RecycleViewAdapter : RecyclerView.Adapter<RecycleViewAdapter.MyViewHolder>
         return reminderList.size
     }
 
-    public fun addData(newList : List<ReminderObject>){
+    fun addData(newList : List<ReminderObject>){
         reminderList = newList
         notifyDataSetChanged()
     }

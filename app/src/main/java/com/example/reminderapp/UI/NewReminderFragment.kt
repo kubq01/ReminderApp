@@ -77,6 +77,8 @@ class NewReminderFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             }
         }
 
+        Log.i("AAAAstartf2", "fragment 2 started")
+
         return view
     }
 
@@ -104,4 +106,6 @@ class NewReminderFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         Log.i("AAAdate", "$p1 $p2 $p3")
         System.out.println("AAAAAAAA")
     }
+
+
 }

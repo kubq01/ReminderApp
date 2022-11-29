@@ -1,13 +1,21 @@
 package com.example.reminderapp.UI
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
-import com.example.reminderapp.R
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.reminderapp.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.time.LocalDateTime
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -23,6 +31,8 @@ public class ListFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var viewModel : FragmentViewModel
+    lateinit var servis : ServisClass
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,10 +48,33 @@ public class ListFragment : Fragment() {
     ): View? {
 
         val view = inflater.inflate(R.layout.fragment_list, container, false)
+
+
+
+        viewModel = ViewModelProvider(this)[FragmentViewModel::class.java]
+
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
+        val rAdapter = RecycleViewAdapter()
+        recyclerView.adapter = rAdapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        viewModel.showAll().observe(viewLifecycleOwner, Observer {
+
+            //findViewById<TextView>(R.id.textView).text = it.toString()
+            Log.i("AALiveData","changed")
+            rAdapter.addData(it)
+        })
+
         view.findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
-            NavHostFragment.findNavController(this).navigate(R.id.action_listFragment_to_newReminderFragment)
+            //NavHostFragment.findNavController(this).navigate(R.id.action_listFragment_to_newReminderFragment)
+            val r = ReminderObject("textttttteee",false,
+                LocalDateTime.now(), Importance.min, LocalDateTime.now(),"cat1")
+
+
+            viewModel.insertReminder(r)
         }
 
+        Log.i("AAAAstartf1", "fragment 1 started")
         // Inflate the layout for this fragment
         return view
     }
