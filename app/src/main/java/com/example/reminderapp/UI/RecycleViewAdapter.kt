@@ -1,23 +1,56 @@
 package com.example.reminderapp.UI
 
+import android.app.AlertDialog
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.reminderapp.FragmentViewModel
 import com.example.reminderapp.Importance
 import com.example.reminderapp.R
 import com.example.reminderapp.ReminderObject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.Period
 
-class RecycleViewAdapter : RecyclerView.Adapter<RecycleViewAdapter.MyViewHolder>() {
+class RecycleViewAdapter(val viewModel : FragmentViewModel,val context : Context) : RecyclerView.Adapter<RecycleViewAdapter.MyViewHolder>() {
 
     private var reminderList = emptyList<ReminderObject>()
+
+    private fun onLongClick(position : Int) : Boolean
+    {
+        Log.i("AAAAA","long click")
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle(R.string.delete)
+        builder.setMessage(R.string.deleteDesc)
+
+        builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+            deleteItem(position)
+        }
+
+        builder.setNegativeButton(android.R.string.no) { dialog, which ->
+
+        }
+        builder.show()
+        return true
+    }
+
+    private fun deleteItem(position: Int)
+    {
+        viewModel.delete(reminderList.get(position))
+        notifyDataSetChanged()
+    }
+
 
     class MyViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
 
@@ -31,6 +64,11 @@ class RecycleViewAdapter : RecyclerView.Adapter<RecycleViewAdapter.MyViewHolder>
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+
+        holder.itemView.setOnLongClickListener {
+            onLongClick(position)
+        }
+
 
         val rObject : ReminderObject = reminderList.get(position)
 
@@ -104,5 +142,7 @@ class RecycleViewAdapter : RecyclerView.Adapter<RecycleViewAdapter.MyViewHolder>
         reminderList = newList
         notifyDataSetChanged()
     }
+
+
 
 }

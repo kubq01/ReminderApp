@@ -39,5 +39,18 @@ class FragmentViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
+    fun delete(reminder: ReminderObject)
+    {
+        viewModelScope.launch(Dispatchers.IO) {
+            servis.delete(reminder)
+        }
+    }
+
+    suspend fun getAllCategories() : List<String>
+    {
+            return servis.getAllCategories()
+
+    }
+
 
 }

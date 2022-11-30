@@ -24,4 +24,14 @@ class ServisClass(var context : Context) {
         dao.deleteAll()
     }
 
+    suspend fun delete(reminder: ReminderObject)
+    {
+        dao.delete(reminder)
+    }
+
+    suspend fun getAllCategories() : List<String>
+    {
+       return dao.getAllCategories()
+    }
+
 }

@@ -54,7 +54,7 @@ public class ListFragment : Fragment() {
         viewModel = ViewModelProvider(this)[FragmentViewModel::class.java]
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
-        val rAdapter = RecycleViewAdapter()
+        val rAdapter = RecycleViewAdapter(viewModel,requireContext())
         recyclerView.adapter = rAdapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
@@ -66,12 +66,12 @@ public class ListFragment : Fragment() {
         })
 
         view.findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
-            //NavHostFragment.findNavController(this).navigate(R.id.action_listFragment_to_newReminderFragment)
-            val r = ReminderObject("textttttteee",false,
-                LocalDateTime.now(), Importance.min, LocalDateTime.now(),"cat1")
+            NavHostFragment.findNavController(this).navigate(R.id.action_listFragment_to_newReminderFragment)
+           // val r = ReminderObject("textttttteee",false,
+           //     LocalDateTime.now(), Importance.min, LocalDateTime.now(),"cat1")
 
 
-            viewModel.insertReminder(r)
+          //  viewModel.insertReminder(r)
         }
 
         Log.i("AAAAstartf1", "fragment 1 started")

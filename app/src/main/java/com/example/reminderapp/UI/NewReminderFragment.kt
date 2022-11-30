@@ -1,17 +1,24 @@
 package com.example.reminderapp.UI
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.widget.SwitchCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import com.example.reminderapp.FragmentViewModel
+import com.example.reminderapp.Importance
 import com.example.reminderapp.R
-import com.google.android.material.button.MaterialButtonToggleGroup
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -29,8 +36,24 @@ class NewReminderFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var switch : SwitchCompat
-    private lateinit var spinner : Spinner
+    private lateinit var spinnerImp : Spinner
     private lateinit var button : Button
+    private lateinit var spinnerCat : Spinner
+
+
+    //data to pass to ReminderObject
+    private var reminderText : String? = null
+    private var containsDeadline : Boolean?  = null
+    private var deadline : LocalDateTime? = null
+    private var importance : Importance? = null
+    private var startDate : LocalDateTime? = null
+    private var category : String? = null
+
+    private var categories : MutableList<String> = mutableListOf<String>()
+    private lateinit var viewModel : FragmentViewModel
+    private var newCat = false
+    private lateinit var addcat : ImageView
+    private var catSet = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +70,118 @@ class NewReminderFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_new_reminder, container, false)
 
+        viewModel = ViewModelProvider(this)[FragmentViewModel::class.java]
+
+        categories.add("ddd")
+
+
+        spinnerCat = view.findViewById(R.id.spinnerCategory)
+
+        var spinCAd = ArrayAdapter(
+            requireContext(),
+            R.layout.spinner_item_layout,
+            categories)
+
+        spinCAd.setDropDownViewResource( R.layout.spinner_item_layout)
+        spinnerCat.setAdapter(spinCAd)
+
+        viewModel.viewModelScope.launch(Dispatchers.Main) {
+
+            categories = viewModel.getAllCategories() as MutableList<String>
+            //categories.add(getString(R.string.newCat))
+
+            spinCAd = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item_layout,
+                categories)
+
+            spinCAd.setDropDownViewResource( R.layout.spinner_item_layout)
+            spinnerCat.setAdapter(spinCAd)
+            catSet = true
+
+            /*
+            spinnerCat.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                }
+
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    if(position.equals(categories.size-1))
+                    {
+                        Log.i("AAAAA","new item")
+                        val builder = AlertDialog.Builder(context)
+                        builder.setTitle(R.string.addItem)
+
+                        val editText = EditText(requireContext())
+                        editText.setHint(R.string.addItemEdit)
+                        builder.setView(editText)
+
+                        builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+                            if(editText.text!=null && !(editText.text.toString().equals("")))
+                            {
+                                if(!newCat) {
+                                    categories.set(categories.size - 1, editText.text.toString())
+                                    categories.add(getString(R.string.newCat))
+                                    newCat = true
+                                }else
+                                {
+                                    categories.set(categories.size - 2, editText.text.toString())
+                                }
+
+                                Log.i("AAAAA","1${editText.text}2")
+                            }
+                        }
+
+                        builder.setNegativeButton(android.R.string.no) { dialog, which ->
+
+                        }
+                        builder.show()
+                    }
+                    else
+                        Log.i("AAAAA","pos $position")
+                }
+
+            }
+
+             */
+        }
+
+        addcat = view.findViewById(R.id.imageNewCat)
+        addcat.setOnClickListener{
+
+            if(catSet) {
+
+                val builder = AlertDialog.Builder(context)
+                builder.setTitle(R.string.addItem)
+
+                val editText = EditText(requireContext())
+                editText.setHint(R.string.addItemEdit)
+                builder.setView(editText)
+
+                builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+                    if (editText.text != null && !(editText.text.toString().equals(""))) {
+                        if (!newCat) {
+                            categories.add(editText.text.toString())
+                            newCat = true
+                        } else {
+                            categories.set(categories.size - 1, editText.text.toString())
+                        }
+
+                        spinCAd.notifyDataSetChanged()
+                        spinnerCat.setSelection(categories.size-1)
+
+                        Log.i("AAAAA", "1${editText.text}2")
+                    }
+                }
+
+                builder.setNegativeButton(android.R.string.no) { dialog, which ->
+
+                }
+                builder.show()
+            }
+        }
+
+
         button = view.findViewById(R.id.buttonDeadline)
         button.setVisibility(View.GONE)
 
@@ -62,20 +197,34 @@ class NewReminderFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         })
 
         switch = view.findViewById(R.id.switchImpOrDL)
-        spinner = view.findViewById(R.id.spinnerImportance)
+        spinnerImp = view.findViewById(R.id.spinnerImportance)
+
+        val impArray = arrayOf<String>(Importance.max.name,Importance.mid.name,Importance.min.name)
+
+        val spinIAd = ArrayAdapter(
+                requireContext(),
+            R.layout.spinner_item_layout,
+        impArray)
+
+        spinIAd.setDropDownViewResource( R.layout.spinner_item_layout)
+
+        spinnerImp.setAdapter(spinIAd)
+
 
         switch.setOnCheckedChangeListener{buttonView, isChecked ->
 
             if (isChecked) {
                 switch.setText(R.string.Deadline)
                 button.setVisibility(View.VISIBLE);
-                spinner.setVisibility(View.GONE);
+                spinnerImp.setVisibility(View.GONE);
             } else {
                 switch.setText(R.string.Importance)
                 button.setVisibility(View.GONE);
-                spinner.setVisibility(View.VISIBLE);
+                spinnerImp.setVisibility(View.VISIBLE);
             }
         }
+
+
 
         Log.i("AAAAstartf2", "fragment 2 started")
 
@@ -105,6 +254,11 @@ class NewReminderFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
         Log.i("AAAdate", "$p1 $p2 $p3")
         System.out.println("AAAAAAAA")
+        val str = "$p1-$p2-$p3 00:00"
+        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+        deadline = LocalDateTime.parse(str, formatter)
+        button.setText("$p3.$p2.$p1")
+
     }
 
 

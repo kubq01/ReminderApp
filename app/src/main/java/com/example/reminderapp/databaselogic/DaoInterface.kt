@@ -2,6 +2,7 @@ package com.example.reminderapp.databaselogic
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.reminderapp.ReminderObject
@@ -17,5 +18,11 @@ interface DaoInterface {
 
     @Query("Delete from ReminderObject")
     suspend fun deleteAll()
+
+    @Delete
+    suspend fun delete(reminder : ReminderObject)
+
+    @Query("Select category from ReminderObject group by category")
+    suspend fun getAllCategories() : List<String>
 
 }

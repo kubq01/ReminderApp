@@ -6,4 +6,9 @@
     <string name="Importance">Importance</string>
     <string name="Deadline">Deadline</string>
     <string name="selectDate">Select a date</string>
+    <string name="delete">Delete item</string>
+    <string name="deleteDesc">Do you want to delete this item?</string>
+    <string name="newCat">new</string>
+    <string name="addItem">New category</string>
+    <string name="addItemEdit">Add new category</string>
 </resources>
