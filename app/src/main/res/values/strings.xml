@@ -11,4 +11,9 @@
     <string name="newCat">new</string>
     <string name="addItem">New category</string>
     <string name="addItemEdit">Add new category</string>
+    <string name="missingText">Reminder cannot be empty</string>
+    <string name="missingDeadline">Deadline is not set</string>
+    <string name="defaultCat">default</string>
+    <string name="unsaved">Umsaved changes</string>
+    <string name="unsavedExit">Do you want to save reminder?</string>
 </resources>

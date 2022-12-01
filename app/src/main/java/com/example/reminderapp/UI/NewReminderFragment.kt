@@ -8,13 +8,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.fragment.NavHostFragment
 import com.example.reminderapp.FragmentViewModel
 import com.example.reminderapp.Importance
 import com.example.reminderapp.R
+import com.example.reminderapp.ReminderObject
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -42,18 +46,19 @@ class NewReminderFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
 
     //data to pass to ReminderObject
-    private var reminderText : String? = null
-    private var containsDeadline : Boolean?  = null
+    private var reminderText : String = ""
+    private var containsDeadline : Boolean  = false
     private var deadline : LocalDateTime? = null
-    private var importance : Importance? = null
-    private var startDate : LocalDateTime? = null
-    private var category : String? = null
+    private var importance : Importance = Importance.min
+    private var startDate : LocalDateTime = LocalDateTime.now()
+    private var category : String = ""
 
     private var categories : MutableList<String> = mutableListOf<String>()
     private lateinit var viewModel : FragmentViewModel
     private var newCat = false
     private lateinit var addcat : ImageView
     private var catSet = false
+    private lateinit var editText : EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +66,63 @@ class NewReminderFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+        activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if(!editText.text.toString().equals("")) {
+
+                    reminderText = editText.text.toString()
+
+                    if (!catSet)
+                        return
+
+                    category = spinnerCat.selectedItem.toString()
+
+                    if (containsDeadline) {
+                        importance = Importance.min
+
+                        if(deadline==null)
+                            return
+
+                    } else {
+                        importance = Importance.valueOf(spinnerImp.selectedItem.toString())
+                        deadline = LocalDateTime.now()
+                    }
+
+                    startDate = LocalDateTime.now()
+
+                    val builder = AlertDialog.Builder(context)
+                    builder.setTitle(R.string.unsaved)
+                    builder.setMessage(R.string.unsavedExit)
+
+                    builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+                        deadline?.let{
+                            viewModel.insertReminder(ReminderObject(reminderText,containsDeadline,it,importance,startDate,category))
+                            NavHostFragment.findNavController(getFragment()).navigate(R.id.action_newReminderFragment_to_listFragment)
+                        } ?: kotlin.run {
+                            Toast.makeText(requireContext(),R.string.missingDeadline,Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    builder.setNegativeButton(android.R.string.no) { dialog, which ->
+                        NavHostFragment.findNavController(getFragment()).navigate(R.id.action_newReminderFragment_to_listFragment)
+                    }
+                    builder.show()
+                }else
+                {
+                    NavHostFragment.findNavController(getFragment()).navigate(R.id.action_newReminderFragment_to_listFragment)
+                }
+
+            }
+        })
     }
+
+
+    private fun getFragment(): Fragment{
+        return this
+    }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,6 +130,8 @@ class NewReminderFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_new_reminder, container, false)
+
+        editText = view.findViewById(R.id.editTextReminderText)
 
         viewModel = ViewModelProvider(this)[FragmentViewModel::class.java]
 
@@ -89,6 +152,9 @@ class NewReminderFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
             categories = viewModel.getAllCategories() as MutableList<String>
             //categories.add(getString(R.string.newCat))
+
+            if(categories.size.equals(0))
+                categories.add(getString(R.string.defaultCat))
 
             spinCAd = ArrayAdapter(
                 requireContext(),
@@ -217,11 +283,52 @@ class NewReminderFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 switch.setText(R.string.Deadline)
                 button.setVisibility(View.VISIBLE);
                 spinnerImp.setVisibility(View.GONE);
+                containsDeadline = true
             } else {
                 switch.setText(R.string.Importance)
                 button.setVisibility(View.GONE);
                 spinnerImp.setVisibility(View.VISIBLE);
+                containsDeadline = false
             }
+        }
+
+        view.findViewById<FloatingActionButton>(R.id.fab).setOnClickListener{
+            if(editText.text.toString().equals(""))
+            {
+                Toast.makeText(requireContext(),R.string.missingText,Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            reminderText = editText.text.toString()
+
+            if(!catSet)
+                return@setOnClickListener
+
+            category = spinnerCat.selectedItem.toString()
+
+            if(containsDeadline)
+            {
+                importance = Importance.min
+            }else
+            {
+                importance = Importance.valueOf(spinnerImp.selectedItem.toString())
+                deadline = LocalDateTime.now()
+            }
+
+            startDate = LocalDateTime.now()
+
+
+           deadline?.let{
+               viewModel.insertReminder(ReminderObject(reminderText,containsDeadline,it,importance,startDate,category))
+               NavHostFragment.findNavController(this).navigate(R.id.action_newReminderFragment_to_listFragment)
+           } ?: kotlin.run {
+               Toast.makeText(requireContext(),R.string.missingDeadline,Toast.LENGTH_SHORT).show()
+               return@setOnClickListener
+           }
+
+
+
+
         }
 
 
@@ -260,6 +367,7 @@ class NewReminderFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         button.setText("$p3.$p2.$p1")
 
     }
+
 
 
 }

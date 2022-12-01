@@ -103,7 +103,8 @@ class RecycleViewAdapter(val viewModel : FragmentViewModel,val context : Context
                     ContextCompat.getColor(holder.itemView.findViewById<ImageView>(R.id.imageView).context,R.color.minImp))
             }
 
-            holder.itemView.findViewById<TextView>(R.id.textViewDeadline).setText("Due to: ${rObject.deadline.dayOfYear}.${rObject.deadline.month}.${rObject.deadline.year}")
+           holder.itemView.findViewById<TextView>(R.id.textViewDeadline).setText("Due to: ${rObject.deadline.dayOfMonth}.${rObject.deadline.monthValue}.${rObject.deadline.year}")
+           // holder.itemView.findViewById<TextView>(R.id.textViewDeadline).setText("Due to: $deadline")
         }else
         {
             if(rObject.importance.equals(Importance.max))

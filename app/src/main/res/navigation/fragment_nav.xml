@@ -20,5 +20,9 @@
         android:id="@+id/newReminderFragment"
         android:name="com.example.reminderapp.UI.NewReminderFragment"
         android:label="fragment_new_reminder"
-        tools:layout="@layout/fragment_new_reminder" />
+        tools:layout="@layout/fragment_new_reminder" >
+        <action
+            android:id="@+id/action_newReminderFragment_to_listFragment"
+            app:destination="@id/listFragment" />
+    </fragment>
 </navigation>
