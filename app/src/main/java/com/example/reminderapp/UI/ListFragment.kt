@@ -54,7 +54,7 @@ public class ListFragment : Fragment() {
         viewModel = ViewModelProvider(this)[FragmentViewModel::class.java]
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
-        val rAdapter = RecycleViewAdapter(viewModel,requireContext())
+        val rAdapter = RecycleViewAdapter(viewModel,requireContext(),this)
         recyclerView.adapter = rAdapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 

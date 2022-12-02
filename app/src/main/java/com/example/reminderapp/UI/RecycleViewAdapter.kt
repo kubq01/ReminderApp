@@ -10,7 +10,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.reminderapp.FragmentViewModel
@@ -23,7 +26,7 @@ import java.time.Duration
 import java.time.LocalDateTime
 import java.time.Period
 
-class RecycleViewAdapter(val viewModel : FragmentViewModel,val context : Context) : RecyclerView.Adapter<RecycleViewAdapter.MyViewHolder>() {
+class RecycleViewAdapter(val viewModel : FragmentViewModel,val context : Context,val fragment: Fragment) : RecyclerView.Adapter<RecycleViewAdapter.MyViewHolder>() {
 
     private var reminderList = emptyList<ReminderObject>()
 
@@ -71,6 +74,10 @@ class RecycleViewAdapter(val viewModel : FragmentViewModel,val context : Context
 
 
         val rObject : ReminderObject = reminderList.get(position)
+
+        holder.itemView.setOnClickListener{
+            onClick(rObject)
+        }
 
         if(rObject.containsDeadline)
         {
@@ -142,6 +149,13 @@ class RecycleViewAdapter(val viewModel : FragmentViewModel,val context : Context
     fun addData(newList : List<ReminderObject>){
         reminderList = newList
         notifyDataSetChanged()
+    }
+
+
+    private fun onClick(reminder: ReminderObject)
+    {
+        val action = ListFragmentDirections.actionListFragmentToUpdateReminderFragment(reminder)
+        NavHostFragment.findNavController(fragment).navigate(action)
     }
 
 

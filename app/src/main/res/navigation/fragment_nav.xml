@@ -15,6 +15,9 @@
             app:destination="@id/newReminderFragment"
             app:enterAnim="@anim/nav_default_pop_enter_anim"
             app:exitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_listFragment_to_updateReminderFragment"
+            app:destination="@id/updateReminderFragment" />
     </fragment>
     <fragment
         android:id="@+id/newReminderFragment"
@@ -24,5 +27,16 @@
         <action
             android:id="@+id/action_newReminderFragment_to_listFragment"
             app:destination="@id/listFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/updateReminderFragment"
+        android:name="com.example.reminderapp.UI.UpdateReminderFragment"
+        android:label="UpdateReminderFragment" >
+        <action
+            android:id="@+id/action_updateReminderFragment_to_listFragment"
+            app:destination="@id/listFragment" />
+        <argument
+            android:name="reminder"
+            app:argType="com.example.reminderapp.ReminderObject" />
     </fragment>
 </navigation>

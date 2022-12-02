@@ -2,6 +2,7 @@ package com.example.reminderapp
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -22,7 +23,7 @@ data class ReminderObject (
     //var deadline3 : LocalDateTime,
     var importance : Importance,
     var startDate : LocalDateTime,
-    var category : String)
+    var category : String) : Serializable
 {
     @PrimaryKey(autoGenerate = true)
     var id : Int = 0
