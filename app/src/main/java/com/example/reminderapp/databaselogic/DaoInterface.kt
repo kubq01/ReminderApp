@@ -1,10 +1,7 @@
 package com.example.reminderapp.databaselogic
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.example.reminderapp.ReminderObject
 
 @Dao
@@ -24,5 +21,8 @@ interface DaoInterface {
 
     @Query("Select category from ReminderObject group by category")
     suspend fun getAllCategories() : List<String>
+
+    @Update
+    suspend fun updateReminder(reminder: ReminderObject)
 
 }

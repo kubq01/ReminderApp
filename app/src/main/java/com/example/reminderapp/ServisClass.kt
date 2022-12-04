@@ -34,4 +34,8 @@ class ServisClass(var context : Context) {
        return dao.getAllCategories()
     }
 
+    suspend fun updateReminder(reminder: ReminderObject)
+    {
+        dao.updateReminder(reminder)
+    }
 }

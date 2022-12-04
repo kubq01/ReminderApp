@@ -52,5 +52,12 @@ class FragmentViewModel(application: Application) : AndroidViewModel(application
 
     }
 
+    fun updateReminder(reminder: ReminderObject)
+    {
+        viewModelScope.launch(Dispatchers.IO) {
+            servis.updateReminder(reminder)
+        }
+    }
+
 
 }

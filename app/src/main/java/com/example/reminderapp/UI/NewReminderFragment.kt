@@ -60,6 +60,7 @@ class NewReminderFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private var catSet = false
     private lateinit var editText : EditText
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -74,7 +75,10 @@ class NewReminderFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                     reminderText = editText.text.toString()
 
                     if (!catSet)
+                    {
+                        NavHostFragment.findNavController(getFragment()).navigate(R.id.action_newReminderFragment_to_listFragment)
                         return
+                    }
 
                     category = spinnerCat.selectedItem.toString()
 
@@ -82,7 +86,10 @@ class NewReminderFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                         importance = Importance.min
 
                         if(deadline==null)
+                        {
+                            NavHostFragment.findNavController(getFragment()).navigate(R.id.action_newReminderFragment_to_listFragment)
                             return
+                        }
 
                     } else {
                         importance = Importance.valueOf(spinnerImp.selectedItem.toString())
@@ -100,7 +107,8 @@ class NewReminderFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                             viewModel.insertReminder(ReminderObject(reminderText,containsDeadline,it,importance,startDate,category))
                             NavHostFragment.findNavController(getFragment()).navigate(R.id.action_newReminderFragment_to_listFragment)
                         } ?: kotlin.run {
-                            Toast.makeText(requireContext(),R.string.missingDeadline,Toast.LENGTH_SHORT).show()
+                           // Toast.makeText(requireContext(),R.string.missingDeadline,Toast.LENGTH_SHORT).show()
+                            NavHostFragment.findNavController(getFragment()).navigate(R.id.action_newReminderFragment_to_listFragment)
                         }
                     }
 
