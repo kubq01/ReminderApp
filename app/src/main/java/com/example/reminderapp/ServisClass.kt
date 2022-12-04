@@ -38,4 +38,14 @@ class ServisClass(var context : Context) {
     {
         dao.updateReminder(reminder)
     }
+
+    fun showByCategories(cat : String) : LiveData<List<ReminderObject>>
+    {
+        return dao.showByCategories(cat)
+    }
+
+    fun showByimportance(imp : Importance) : LiveData<List<ReminderObject>>
+    {
+        return dao.showByImportance(imp)
+    }
 }

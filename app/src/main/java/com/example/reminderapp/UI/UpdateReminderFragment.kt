@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.SwitchCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -22,6 +23,7 @@ import com.example.reminderapp.ReminderObject
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.time.Duration
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -96,6 +98,9 @@ class UpdateReminderFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 if(!containsDeadline)
                 {
                     importance = Importance.valueOf(spinnerImp.selectedItem.toString())
+                }else
+                {
+                    setImportance()
                 }
 
 
@@ -305,6 +310,9 @@ class UpdateReminderFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             if(!containsDeadline)
             {
                 importance = Importance.valueOf(spinnerImp.selectedItem.toString())
+            }else
+            {
+                setImportance()
             }
 
 
@@ -354,11 +362,39 @@ class UpdateReminderFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
         Log.i("AAAdate", "$p1 $p2 $p3")
         System.out.println("AAAAAAAA")
-        val str = "$p1-$p2-$p3 00:00"
+        var str : String
+        if(p3<10)
+            str = "$p1-$p2-0$p3 00:00"
+        else
+            str = "$p1-$p2-$p3 00:00"
         val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
         deadline = LocalDateTime.parse(str, formatter)
         containsDeadline = true
         button.setText("$p3.$p2.$p1")
+    }
+
+    private fun setImportance()
+    {
+        val current : LocalDateTime = LocalDateTime.now()
+
+        val timeLeft : Duration = Duration.between(current, deadline)
+        val timeLeftDays : Long = timeLeft.toDays()
+
+        val timeGiven : Duration = Duration.between(startDate, deadline)
+        val timeGivenDays : Long = timeGiven.toDays()
+
+        val percentage : Double = (timeLeftDays*1.0)/(timeGivenDays*1.0)*100
+
+        if(percentage<33)
+        {
+            importance = Importance.max
+        }else if(percentage<66)
+        {
+            importance = Importance.mid
+        }else
+        {
+            importance = Importance.min
+        }
     }
 
 

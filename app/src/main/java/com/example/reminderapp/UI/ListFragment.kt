@@ -6,15 +6,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.lifecycle.*
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.reminderapp.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
 // TODO: Rename parameter arguments, choose names that match
@@ -32,7 +33,11 @@ public class ListFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var viewModel : FragmentViewModel
-    lateinit var servis : ServisClass
+    private lateinit var catList : List<String>
+    private lateinit var impList : List<String>
+    private var catSet = false
+    private var impOrCat = true //true - importance, false - categories
+    private var index = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,29 +54,69 @@ public class ListFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_list, container, false)
 
+        impList = mutableListOf(Importance.min.name, Importance.mid.name, Importance.max.name)
 
+        view.findViewById<TextView>(R.id.textViewTitle).setText(impList.get(index))
 
         viewModel = ViewModelProvider(this)[FragmentViewModel::class.java]
 
+        viewModel.viewModelScope.launch(Dispatchers.IO) {
+            catList = viewModel.getAllCategories()
+            catSet = true
+        }
+
+
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
-        val rAdapter = RecycleViewAdapter(viewModel,requireContext(),this)
+        val rAdapter = RecycleViewAdapter(viewModel, requireContext(), this)
         recyclerView.adapter = rAdapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        viewModel.showAll().observe(viewLifecycleOwner, Observer {
+        viewModel.showByImportance(Importance.valueOf(impList.get(index)))
+            .observe(viewLifecycleOwner, Observer {
 
-            //findViewById<TextView>(R.id.textView).text = it.toString()
-            Log.i("AALiveData","changed")
-            rAdapter.addData(it)
-        })
+                //findViewById<TextView>(R.id.textView).text = it.toString()
+                Log.i("AALiveData", "changed")
+                rAdapter.addData(it)
+            })
 
         view.findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
-            NavHostFragment.findNavController(this).navigate(R.id.action_listFragment_to_newReminderFragment)
-           // val r = ReminderObject("textttttteee",false,
-           //     LocalDateTime.now(), Importance.min, LocalDateTime.now(),"cat1")
+            NavHostFragment.findNavController(this)
+                .navigate(R.id.action_listFragment_to_newReminderFragment)
+            // val r = ReminderObject("textttttteee",false,
+            //     LocalDateTime.now(), Importance.min, LocalDateTime.now(),"cat1")
 
 
-          //  viewModel.insertReminder(r)
+            //  viewModel.insertReminder(r)
+        }
+
+        view.findViewById<ImageView>(R.id.imageViewNext).setOnClickListener {
+            if (impOrCat) {
+                index = (index + 1) % impList.size
+                view.findViewById<TextView>(R.id.textViewTitle).setText(impList.get(index))
+                viewModel.showByImportance(Importance.valueOf(impList.get(index)))
+                    .observe(viewLifecycleOwner, Observer {
+
+                        //findViewById<TextView>(R.id.textView).text = it.toString()
+                        Log.i("AALiveData", "changed")
+                        rAdapter.addData(it)
+                    })
+            }
+        }
+
+
+        view.findViewById<ImageView>(R.id.imageViewPrev).setOnClickListener{
+            if(impOrCat){
+                index--
+                if(index<0)
+                    index = 2
+                view.findViewById<TextView>(R.id.textViewTitle).setText(impList.get(index))
+                viewModel.showByImportance(Importance.valueOf(impList.get(index))).observe(viewLifecycleOwner, Observer {
+
+                    //findViewById<TextView>(R.id.textView).text = it.toString()
+                    Log.i("AALiveData","changed")
+                    rAdapter.addData(it)
+                })
+            }
         }
 
         Log.i("AAAAstartf1", "fragment 1 started")

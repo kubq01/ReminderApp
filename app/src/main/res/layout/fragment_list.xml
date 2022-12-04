@@ -21,7 +21,7 @@
             android:gravity="center">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/imageViewPrev"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -29,7 +29,7 @@
                 android:src="@drawable/ic_baseline_arrow_back_ios_24" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/textViewTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -39,7 +39,7 @@
                 android:fontFamily="@font/lato_bold"/>
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/imageViewNext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

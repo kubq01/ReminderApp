@@ -59,5 +59,15 @@ class FragmentViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
+    fun showByCategories(cat : String) : LiveData<List<ReminderObject>>
+    {
+        return servis.showByCategories(cat)
+    }
+
+    fun showByImportance(imp : Importance) : LiveData<List<ReminderObject>>
+    {
+        return servis.showByimportance(imp)
+    }
+
 
 }

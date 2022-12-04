@@ -2,6 +2,7 @@ package com.example.reminderapp.databaselogic
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.example.reminderapp.Importance
 import com.example.reminderapp.ReminderObject
 
 @Dao
@@ -24,5 +25,11 @@ interface DaoInterface {
 
     @Update
     suspend fun updateReminder(reminder: ReminderObject)
+
+    @Query("Select * from ReminderObject where category = :cat")
+    fun showByCategories(cat : String) : LiveData<List<ReminderObject>>
+
+    @Query("Select * from ReminderObject where importance = :imp")
+    fun showByImportance(imp : Importance) : LiveData<List<ReminderObject>>
 
 }
