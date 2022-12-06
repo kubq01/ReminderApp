@@ -54,6 +54,8 @@ public class ListFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_list, container, false)
 
+
+
         impList = mutableListOf(Importance.min.name, Importance.mid.name, Importance.max.name)
 
         view.findViewById<TextView>(R.id.textViewTitle).setText(impList.get(index))
@@ -64,6 +66,8 @@ public class ListFragment : Fragment() {
             catList = viewModel.getAllCategories()
             catSet = true
         }
+
+
 
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
@@ -79,6 +83,35 @@ public class ListFragment : Fragment() {
                 rAdapter.addData(it)
             })
 
+        view.findViewById<TextView>(R.id.textViewTitle).setOnClickListener(View.OnClickListener {
+            if(catSet && catList.size>0)
+            {
+                if(impOrCat)
+                {
+                    impOrCat = false
+                    it.findViewById<TextView>(R.id.textViewTitle).setText(catList.get(0))
+                    viewModel.showByCategories(catList.get(0)).observe(viewLifecycleOwner, Observer {
+
+                        //findViewById<TextView>(R.id.textView).text = it.toString()
+                        Log.i("AALiveData","changed")
+                        rAdapter.addData(it)
+                    })
+                }else
+                {
+                    impOrCat = true
+                    it.findViewById<TextView>(R.id.textViewTitle).setText(impList.get(0))
+                    viewModel.showByImportance(Importance.valueOf(impList.get(0))).observe(viewLifecycleOwner, Observer {
+
+                        //findViewById<TextView>(R.id.textView).text = it.toString()
+                        Log.i("AALiveData","changed")
+                        rAdapter.addData(it)
+                    })
+                }
+
+                index = 0
+            }
+        })
+
         view.findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
             NavHostFragment.findNavController(this)
                 .navigate(R.id.action_listFragment_to_newReminderFragment)
@@ -91,9 +124,19 @@ public class ListFragment : Fragment() {
 
         view.findViewById<ImageView>(R.id.imageViewNext).setOnClickListener {
             if (impOrCat) {
-                index = (index + 1) % impList.size
-                view.findViewById<TextView>(R.id.textViewTitle).setText(impList.get(index))
-                viewModel.showByImportance(Importance.valueOf(impList.get(index)))
+                 index = (index + 1) % impList.size
+                        view.findViewById<TextView>(R.id.textViewTitle).setText(impList.get(index))
+                        viewModel.showByImportance(Importance.valueOf(impList.get(index)))
+                            .observe(viewLifecycleOwner, Observer {
+
+                            //findViewById<TextView>(R.id.textView).text = it.toString()
+                        Log.i("AALiveData", "changed")
+                        rAdapter.addData(it)
+                    })
+            }else{
+                index = (index + 1) % catList.size
+                view.findViewById<TextView>(R.id.textViewTitle).setText(catList.get(index))
+                viewModel.showByCategories(catList.get(index))
                     .observe(viewLifecycleOwner, Observer {
 
                         //findViewById<TextView>(R.id.textView).text = it.toString()
@@ -101,6 +144,7 @@ public class ListFragment : Fragment() {
                         rAdapter.addData(it)
                     })
             }
+
         }
 
 
@@ -111,6 +155,18 @@ public class ListFragment : Fragment() {
                     index = 2
                 view.findViewById<TextView>(R.id.textViewTitle).setText(impList.get(index))
                 viewModel.showByImportance(Importance.valueOf(impList.get(index))).observe(viewLifecycleOwner, Observer {
+
+                    //findViewById<TextView>(R.id.textView).text = it.toString()
+                    Log.i("AALiveData","changed")
+                    rAdapter.addData(it)
+                })
+            }else
+            {
+                index--
+                if(index<0)
+                    index = catList.size - 1
+                view.findViewById<TextView>(R.id.textViewTitle).setText(catList.get(index))
+                viewModel.showByCategories(catList.get(index)).observe(viewLifecycleOwner, Observer {
 
                     //findViewById<TextView>(R.id.textView).text = it.toString()
                     Log.i("AALiveData","changed")
