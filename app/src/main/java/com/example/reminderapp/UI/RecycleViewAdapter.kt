@@ -109,8 +109,12 @@ class RecycleViewAdapter(val viewModel : FragmentViewModel,val context : Context
                 holder.itemView.findViewById<ImageView>(R.id.imageView).setColorFilter(
                     ContextCompat.getColor(holder.itemView.findViewById<ImageView>(R.id.imageView).context,R.color.minImp))
             }
-
-           holder.itemView.findViewById<TextView>(R.id.textViewDeadline).setText("Due to: ${rObject.deadline.dayOfMonth}.${rObject.deadline.monthValue}.${rObject.deadline.year}")
+            Log.i("AAAAAnotDeadline ${rObject.reminderText}",rObject.containsDeadline.toString())
+            holder.itemView.findViewById<TextView>(R.id.textViewDeadline).setVisibility(View.VISIBLE)
+            if(rObject.deadline.monthValue>=9)
+                holder.itemView.findViewById<TextView>(R.id.textViewDeadline).setText("Due to: ${rObject.deadline.dayOfMonth}.${rObject.deadline.monthValue}.${rObject.deadline.year}")
+            else
+                holder.itemView.findViewById<TextView>(R.id.textViewDeadline).setText("Due to: ${rObject.deadline.dayOfMonth}.0${rObject.deadline.monthValue}.${rObject.deadline.year}")
            // holder.itemView.findViewById<TextView>(R.id.textViewDeadline).setText("Due to: $deadline")
         }else
         {
@@ -133,8 +137,12 @@ class RecycleViewAdapter(val viewModel : FragmentViewModel,val context : Context
                     ContextCompat.getColor(holder.itemView.findViewById<ImageView>(R.id.imageView).context,R.color.minImp))
 
             }
-
-            holder.itemView.findViewById<TextView>(R.id.textViewDeadline).setVisibility(View.GONE)
+            Log.i("AAAAAnotDeadline",rObject.containsDeadline.toString())
+            if(!rObject.containsDeadline)
+            {
+                holder.itemView.findViewById<TextView>(R.id.textViewDeadline).setVisibility(View.GONE)
+                //holder.itemView.findViewById<TextView>(R.id.textViewDeadline).setText("")
+            }
         }
 
 

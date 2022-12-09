@@ -369,14 +369,26 @@ class NewReminderFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
         Log.i("AAAdate", "$p1 $p2 $p3")
         System.out.println("AAAAAAAA")
-        var str : String
-        if(p3<10)
-            str = "$p1-$p2-0$p3 00:00"
+        val str : String
+        val month : String
+        val day : String
+
+
+        if(p2<10)
+            month = "0${p2 + 1}"
         else
-            str = "$p1-$p2-$p3 00:00"
+            month = "${p2 +1}"
+
+        if(p3<10)
+            day = "0$p3"
+        else
+            day = p3.toString()
+
+        str = "$p1-$month-$day 00:00"
+
         val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
         deadline = LocalDateTime.parse(str, formatter)
-        button.setText("$p3.$p2.$p1")
+        button.setText("$day.$month.$p1")
 
     }
 

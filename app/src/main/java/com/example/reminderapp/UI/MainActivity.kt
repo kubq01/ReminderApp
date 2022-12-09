@@ -1,5 +1,6 @@
 package com.example.reminderapp.UI
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.reminderapp.*
 import java.time.LocalDateTime
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,12 +25,14 @@ class MainActivity : AppCompatActivity() {
 
         servis = ServisClass(applicationContext)
 
+        viewModel = ViewModelProvider(this)[FragmentViewModel::class.java]
 
+        updateData()
 
         /*
         //var allData : LiveData<List<ReminderObject>> = servis.showAll()
         //val viewModelFactory = MainActivityViewModelFactory(125, applicationContext)
-        viewModel = ViewModelProvider(this)[FragmentViewModel::class.java]
+
 
         viewModel.showAll().observe(this, Observer {
 
@@ -40,6 +44,31 @@ class MainActivity : AppCompatActivity() {
          */
 
 
+
+    }
+
+    fun updateData()
+    {
+        val sharedP = this.getPreferences(Context.MODE_PRIVATE)
+        var day = sharedP.getInt("DAY",-1)
+        var month = sharedP.getInt("MONTH",-1)
+        var year = sharedP.getInt("YEAR",-1)
+
+        val curDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+        val curMonth = Calendar.getInstance().get(Calendar.MONTH)
+        val curYear = Calendar.getInstance().get(Calendar.YEAR)
+
+        val editor = sharedP.edit()
+
+        if((year<0 || month<0 || day<0)||(year!=curYear || month!=curMonth || day!=curDay))
+        {
+            viewModel.updateData()
+            editor.putInt("YEAR",curYear)
+            editor.putInt("MONTH", curMonth)
+            editor.putInt("DAY",curDay)
+            editor.commit()
+
+        }
 
     }
 

@@ -32,4 +32,7 @@ interface DaoInterface {
     @Query("Select * from ReminderObject where importance = :imp")
     fun showByImportance(imp : Importance) : LiveData<List<ReminderObject>>
 
+    @Query("Select * from ReminderObject")
+    suspend fun getAllStatic() : List<ReminderObject>
+
 }

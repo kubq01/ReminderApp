@@ -48,4 +48,9 @@ class ServisClass(var context : Context) {
     {
         return dao.showByImportance(imp)
     }
+
+    suspend fun getAllStatic() : List<ReminderObject>
+    {
+        return dao.getAllStatic()
+    }
 }
