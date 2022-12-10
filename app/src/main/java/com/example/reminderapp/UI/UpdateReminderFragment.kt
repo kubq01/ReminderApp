@@ -189,7 +189,7 @@ class UpdateReminderFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
             if(catSet) {
 
-                val builder = AlertDialog.Builder(context)
+                val builder = AlertDialog.Builder(context,R.style.alertTheme)
                 builder.setTitle(R.string.addItem)
 
                 val editText = EditText(requireContext())

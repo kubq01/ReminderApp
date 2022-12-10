@@ -17,4 +17,5 @@
     <color name="maxImp">#750505</color>
     <color name="midImp">#856307</color>
     <color name="minImp">#082f6e</color>
+    <color name="alertColor">#FFFFFFFF</color>
 </resources>

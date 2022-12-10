@@ -98,7 +98,7 @@ class NewReminderFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
                     startDate = LocalDateTime.now()
 
-                    val builder = AlertDialog.Builder(context)
+                    val builder = AlertDialog.Builder(context,R.style.alertTheme)
                     builder.setTitle(R.string.unsaved)
                     builder.setMessage(R.string.unsavedExit)
 
@@ -225,7 +225,7 @@ class NewReminderFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
             if(catSet) {
 
-                val builder = AlertDialog.Builder(context)
+                val builder = AlertDialog.Builder(context,R.style.alertTheme)
                 builder.setTitle(R.string.addItem)
 
                 val editText = EditText(requireContext())
