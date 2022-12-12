@@ -86,8 +86,10 @@ public class ListFragment : Fragment() {
         view.findViewById<TextView>(R.id.textViewTitle).setOnClickListener(View.OnClickListener {
             if(catSet && catList.size>0)
             {
+                rAdapter.deleted = false
                 if(impOrCat)
                 {
+
                     impOrCat = false
                     it.findViewById<TextView>(R.id.textViewTitle).setText(catList.get(0))
                     viewModel.showByCategories(catList.get(0)).observe(viewLifecycleOwner, Observer {
@@ -123,6 +125,7 @@ public class ListFragment : Fragment() {
         }
 
         view.findViewById<ImageView>(R.id.imageViewNext).setOnClickListener {
+            rAdapter.deleted = false
             if (impOrCat) {
                  index = (index + 1) % impList.size
                         view.findViewById<TextView>(R.id.textViewTitle).setText(impList.get(index))
@@ -149,6 +152,7 @@ public class ListFragment : Fragment() {
 
 
         view.findViewById<ImageView>(R.id.imageViewPrev).setOnClickListener{
+            rAdapter.deleted = false
             if(impOrCat){
                 index--
                 if(index<0)

@@ -18,4 +18,7 @@
     <color name="midImp">#856307</color>
     <color name="minImp">#082f6e</color>
     <color name="alertColor">#FFFFFFFF</color>
+    <color name="widgetRed">#f2384e</color>
+    <color name="widgetYellow">#d9e650</color>
+    <color name="widgetBlue">#5596e6</color>
 </resources>

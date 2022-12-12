@@ -29,6 +29,7 @@ import java.time.Period
 class RecycleViewAdapter(val viewModel : FragmentViewModel,val context : Context,val fragment: Fragment) : RecyclerView.Adapter<RecycleViewAdapter.MyViewHolder>() {
 
     private var reminderList = ArrayList<ReminderObject>()
+    var deleted = false
 
     private fun onLongClick(position : Int) : Boolean
     {
@@ -51,6 +52,7 @@ class RecycleViewAdapter(val viewModel : FragmentViewModel,val context : Context
 
     private fun deleteItem(position: Int)
     {
+        deleted = true
         viewModel.delete(reminderList.get(position))
         reminderList.removeAt(position)
         notifyItemRemoved(position)
@@ -157,8 +159,12 @@ class RecycleViewAdapter(val viewModel : FragmentViewModel,val context : Context
     }
 
     fun addData(newList : List<ReminderObject>){
-        reminderList = newList as ArrayList<ReminderObject>
-        notifyDataSetChanged()
+        Log.i("AAAAAAdeleted",deleted.toString())
+       if(!deleted) {
+            reminderList = newList as ArrayList<ReminderObject>
+            notifyDataSetChanged()
+            deleted = false
+        }
     }
 
 

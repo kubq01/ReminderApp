@@ -16,4 +16,7 @@
     <string name="defaultCat">default</string>
     <string name="unsaved">Umsaved changes</string>
     <string name="unsavedExit">Do you want to save reminder?</string>
+    <string name="maxImp">Max importance</string>
+    <string name="midImp">Mid importance</string>
+    <string name="minImp">Min importance</string>
 </resources>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewImpMax"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/maxImp"
+            android:layout_weight="0.1"
+            android:background="@color/widgetRed"
+            android:textColor="@color/maxImp"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewImpMax"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:background="@color/widgetRed"
+            android:alpha="0.7"
+            android:textColor="@color/maxImp"/>
+
+        <TextView
+            android:id="@+id/textViewImpMid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/midimp"
+            android:layout_weight="0.1"
+            android:background="@color/widgetYellow"
+            android:textColor="@color/midImp"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewImpMid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:background="@color/widgetYellow"
+            android:alpha="0.7"
+            android:textColor="@color/midImp"/>
+
+        <TextView
+            android:id="@+id/textViewImpMin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/minImp"
+            android:layout_weight="0.1"
+            android:background="@color/widgetBlue"
+            android:textColor="@color/minImp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewImpMin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:background="@color/widgetBlue"
+            android:alpha="0.7"
+            android:textColor="@color/minImp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </LinearLayout>
+</RelativeLayout>
