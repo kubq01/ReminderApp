@@ -3,10 +3,7 @@ package com.example.reminderapp.UI
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.TextView
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.reminderapp.*
 import java.time.LocalDateTime
@@ -14,7 +11,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var servis : ServisClass //= ServisClass(applicationContext)
+    lateinit var servis : ServiceClass //= ServisClass(applicationContext)
 
     lateinit var viewModel : FragmentViewModel
 
@@ -23,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-        servis = ServisClass(applicationContext)
+        servis = ServiceClass(applicationContext)
 
         viewModel = ViewModelProvider(this)[FragmentViewModel::class.java]
 

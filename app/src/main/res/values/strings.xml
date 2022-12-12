@@ -19,4 +19,5 @@
     <string name="maxImp">Max importance</string>
     <string name="midImp">Mid importance</string>
     <string name="minImp">Min importance</string>
+    <string name="noReminders">No reminders in this category</string>
 </resources>

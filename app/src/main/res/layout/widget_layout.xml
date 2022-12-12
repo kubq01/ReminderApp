@@ -6,7 +6,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
         <TextView
             android:id="@+id/textViewImpMax"
@@ -16,35 +17,46 @@
             android:layout_weight="0.1"
             android:background="@color/widgetRed"
             android:textColor="@color/maxImp"
+            android:textSize="20sp"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:fontFamily="@font/lato_bold"
             />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewImpMax"
+
+        <ListView
+            android:id="@+id/listViewImpMax"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/maxImp"
             android:layout_weight="0.2"
-            android:background="@color/widgetRed"
             android:alpha="0.7"
-            android:textColor="@color/maxImp"/>
+            android:background="@color/widgetRed"/>
+
 
         <TextView
             android:id="@+id/textViewImpMid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/midimp"
+            android:text="@string/midImp"
             android:layout_weight="0.1"
             android:background="@color/widgetYellow"
             android:textColor="@color/midImp"
+            android:textSize="20sp"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:fontFamily="@font/lato_bold"
             />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewImpMid"
+        <ListView
+            android:id="@+id/listViewImpMid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
             android:background="@color/widgetYellow"
             android:alpha="0.7"
-            android:textColor="@color/midImp"/>
+            android:textColor="@color/midImp" />
+
 
         <TextView
             android:id="@+id/textViewImpMin"
@@ -53,17 +65,23 @@
             android:text="@string/minImp"
             android:layout_weight="0.1"
             android:background="@color/widgetBlue"
-            android:textColor="@color/minImp"/>
+            android:textColor="@color/minImp"
+            android:textSize="20sp"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:fontFamily="@font/lato_bold"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewImpMin"
+        <ListView
+            android:id="@+id/listViewImpMin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/minImp"
             android:layout_weight="0.2"
-            android:background="@color/widgetBlue"
             android:alpha="0.7"
-            android:textColor="@color/minImp">
+            android:background="@color/widgetBlue"
+           >
+        </ListView>
 
-        </androidx.recyclerview.widget.RecyclerView>
+
     </LinearLayout>
 </RelativeLayout>

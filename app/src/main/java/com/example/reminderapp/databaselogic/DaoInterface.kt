@@ -35,4 +35,7 @@ interface DaoInterface {
     @Query("Select * from ReminderObject")
     suspend fun getAllStatic() : List<ReminderObject>
 
+    @Query("Select * from ReminderObject where importance = :imp")
+    suspend fun getByImportanceStatic(imp : Importance) : List<ReminderObject>
+
 }

@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import com.example.reminderapp.databaselogic.DaoInterface
 
-class ServisClass(var context : Context) {
+class ServiceClass(var context : Context) {
 
     //private val repository : RepositoryClass = RepositoryClass(context)
     val dao : DaoInterface = RepositoryClass(context).getDataBase().getDao()
@@ -52,5 +52,10 @@ class ServisClass(var context : Context) {
     suspend fun getAllStatic() : List<ReminderObject>
     {
         return dao.getAllStatic()
+    }
+
+    suspend fun getByImportanceStatic(imp: Importance) : List<ReminderObject>
+    {
+        return dao.getByImportanceStatic(imp)
     }
 }

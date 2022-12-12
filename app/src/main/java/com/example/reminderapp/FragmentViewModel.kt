@@ -1,12 +1,8 @@
 package com.example.reminderapp
 
 import android.app.Application
-import android.content.Context
-import android.widget.ImageView
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,7 +13,7 @@ class FragmentViewModel(application: Application) : AndroidViewModel(application
 
     //val context : Context = application.applicationContext
     var reminderListlive : LiveData<List<ReminderObject>>
-    val servis = ServisClass(getApplication<Application>().applicationContext)
+    val servis = ServiceClass(getApplication<Application>().applicationContext)
 
      init{
          reminderListlive = servis.showAll()
