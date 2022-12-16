@@ -1,13 +1,13 @@
 package com.example.reminderapp.UI.widget
 
+import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.View
-import android.widget.ImageView
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
-import android.widget.TextView
+import androidx.lifecycle.LiveData
 import com.example.reminderapp.Importance
 import com.example.reminderapp.R
 import com.example.reminderapp.ReminderObject
@@ -15,22 +15,24 @@ import com.example.reminderapp.ServiceClass
 import kotlinx.coroutines.*
 import java.time.LocalDateTime
 
-class WidgetService(val importance: Importance) : RemoteViewsService() {
+
+class WidgetService() : RemoteViewsService() {
     override fun onGetViewFactory(p0: Intent?): RemoteViewsFactory {
-        return RemoteViewFactory(applicationContext,p0!!,importance)
+        return RemoteViewsFactory(applicationContext,p0!!)
     }
 
-    constructor() : this(Importance.min) {
 
-    }
+/*
+    private class RemoteViewFactory(val context: Context,val intent : Intent) : RemoteViewsService.RemoteViewsFactory{
 
-    private class RemoteViewFactory(val context: Context,val intent : Intent,val importance : Importance) : RemoteViewsService.RemoteViewsFactory{
-
-        lateinit var impList : Deferred<List<ReminderObject>>
+        private var impList = ArrayList<ReminderObject>()
+        private lateinit var liveImp : LiveData<List<ReminderObject>>
+        private lateinit var impType : String
         private val scope = CoroutineScope(SupervisorJob())
         private  val service = ServiceClass(context)
-        private var size = 1
-        private var isEmpty = false
+
+
+
 
         val nothingToShowList = listOf<ReminderObject>(
             ReminderObject(
@@ -42,19 +44,62 @@ class WidgetService(val importance: Importance) : RemoteViewsService() {
                 "")
         )
 
-        override fun onCreate() {
-            scope.launch(Dispatchers.IO) {
-                impList = async { service.getByImportanceStatic(importance) }
-                if(impList.await().size==0)
-                    isEmpty = true
-                else
-                    size = impList.await().size
 
-                Log.i("AAAAwidget","widgetService")
+
+        override fun onCreate() {
+
+
+            val appWidgetId = intent.getIntExtra(
+                AppWidgetManager.EXTRA_APPWIDGET_ID,
+                AppWidgetManager.INVALID_APPWIDGET_ID
+            )
+            Log.d("AAAAAAAppWidgetId", appWidgetId.toString())
+
+
+
+            impList.add(ReminderObject(
+                R.string.noReminders.toString(),
+                false,
+                LocalDateTime.now(),
+                Importance.min,
+                LocalDateTime.now(),
+                ""))
+            impList.add(ReminderObject(
+                R.string.noReminders.toString(),
+                false,
+                LocalDateTime.now(),
+                Importance.min,
+                LocalDateTime.now(),
+                ""))
+            impType = intent.getStringExtra("imp").toString()
+
+            liveImp = service.showByimportance(Importance.valueOf(impType))
+            liveImp.observeForever{
+                newData(it as ArrayList<ReminderObject>)
             }
+
+                Log.i("AAAAwidget","widgetServiceccc $impType")
+
         }
 
         override fun onDataSetChanged() {
+
+            liveImp = service.showByimportance(Importance.valueOf(impType))
+
+            if(impList.isEmpty())
+                impList.add(ReminderObject(
+                    R.string.noReminders.toString(),
+                    false,
+                    LocalDateTime.now(),
+                    Importance.min,
+                    LocalDateTime.now(),
+                    ""))
+
+            Log.i("AAAAwidget","data changed")
+
+           for(item  in 0 until count)
+                getViewAt(item)
+
 
         }
 
@@ -63,53 +108,44 @@ class WidgetService(val importance: Importance) : RemoteViewsService() {
         }
 
         override fun getCount(): Int {
-            return size
+            return impList.size
         }
 
         override fun getViewAt(p0: Int): RemoteViews {
+
+            Log.i("AAAAwidget","widgetServicevvv $p0 size: $count type $impType")
 
 
             val remoteView = RemoteViews(
                 context.packageName,
                 R.layout.widget_row_layout
             )
-            if(isEmpty)
-            {
-                remoteView.setTextViewText(R.id.textViewReminder,R.string.noReminders.toString())
-                remoteView.setViewVisibility(R.id.textViewDeadline,View.GONE)
-                remoteView.setViewVisibility(R.id.imageViewListViewRow, View.GONE)
-            }else {
-                scope.launch(Dispatchers.IO) {
-                    remoteView.setTextViewText(
-                        R.id.textViewReminder,
-                        impList.await().get(p0).reminderText
-                    )
-                    val reminderObj = impList.await().get(p0)
-                    val reminderText = reminderObj.reminderText
-                    val reminderImp = reminderObj.importance
-                    val containsDeadline = reminderObj.containsDeadline
 
 
-                    when (reminderImp) {
-                        Importance.max -> remoteView.setImageViewResource(R.id.imageViewListViewRow,R.drawable.ic_max_importance)
-                        Importance.mid -> remoteView.setImageViewResource(R.id.imageViewListViewRow,R.drawable.ic_mid_importance)
-                        Importance.min -> remoteView.setImageViewResource(R.id.imageViewListViewRow,R.drawable.ic_min_importance)
-                        }
+            val reminderObj = impList[p0]
+            val reminderText = reminderObj.reminderText
+            val reminderImp = reminderObj.importance//Importance.valueOf(impType)
+            val containsDeadline = reminderObj.containsDeadline
 
-                    remoteView.setViewVisibility(R.id.imageViewListViewRow,View.VISIBLE)
 
-                    remoteView.setTextViewText(R.id.textViewReminder,reminderText)
-
-                    if (containsDeadline) {
-                        val deadline = reminderObj.deadline
-                        remoteView.setTextViewText(R.id.textViewDeadline,"Due to: ${deadline.dayOfMonth}.0${deadline.monthValue}.${deadline.year}")
-                        remoteView.setViewVisibility(R.id.textViewDeadline,View.VISIBLE)
-                    } else {
-                        remoteView.setViewVisibility(R.id.textViewDeadline,View.GONE)
-                    }
-                }
-
+            when (reminderImp) {
+                Importance.max -> remoteView.setImageViewResource(R.id.imageViewListViewRow,R.drawable.ic_max_importance)
+                Importance.mid -> remoteView.setImageViewResource(R.id.imageViewListViewRow,R.drawable.ic_mid_importance)
+                Importance.min -> remoteView.setImageViewResource(R.id.imageViewListViewRow,R.drawable.ic_min_importance)
             }
+
+            remoteView.setViewVisibility(R.id.imageViewListViewRow,View.VISIBLE)
+
+            remoteView.setTextViewText(R.id.textViewReminder,reminderText)
+
+            if (containsDeadline) {
+                 val deadline = reminderObj.deadline
+                 remoteView.setTextViewText(R.id.textViewDeadline,"Due to: ${deadline.dayOfMonth}.0${deadline.monthValue}.${deadline.year}")
+                 remoteView.setViewVisibility(R.id.textViewDeadline,View.VISIBLE)
+            } else {
+                 remoteView.setViewVisibility(R.id.textViewDeadline,View.GONE)
+            }
+
 
             return remoteView
         }
@@ -119,7 +155,7 @@ class WidgetService(val importance: Importance) : RemoteViewsService() {
                 context.packageName,
                 R.layout.widget_row_layout
             )
-
+            remoteView.setTextViewText(R.id.textViewReminder, "Loading")
             return remoteView
         }
 
@@ -135,5 +171,17 @@ class WidgetService(val importance: Importance) : RemoteViewsService() {
             return true
         }
 
+        private fun newData(list : ArrayList<ReminderObject>)
+        {
+            impList.clear()
+            impList.addAll(list)
+            Log.i("AAAAwidgetSize","${impList.size}")
+            onDataSetChanged()
+
+
+        }
+
     }
+
+ */
 }

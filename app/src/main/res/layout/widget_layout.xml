@@ -31,7 +31,8 @@
             android:textColor="@color/maxImp"
             android:layout_weight="0.2"
             android:alpha="0.7"
-            android:background="@color/widgetRed"/>
+            android:background="@color/widgetRed"
+            />
 
 
         <TextView
